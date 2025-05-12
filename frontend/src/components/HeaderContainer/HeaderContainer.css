@@ -1,0 +1,36 @@
+
+.header-container {
+    width: 100%;
+    height: 4.5rem;
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+}
+
+.header-container .left-section .left-text {
+    font-weight: 500;
+}
+
+/* .participants-count-section {
+        
+} */
+
+.participants-count-section .participants-count-text {
+    font-size: 0.9em;
+}
+
+.participants-count-section .participants-count-text {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.participants-count-section .participants-count-bar {
+    width: 100%;
+    height: 6px;
+    border-radius: 5px;
+    background-color: rgb(56, 56, 56);
+    margin-top: 0.5rem;
+}

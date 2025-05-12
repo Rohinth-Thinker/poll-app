@@ -1,0 +1,9 @@
+
+.create-presentation-container {
+    background-color: rgb(235, 232, 232);
+    height: 100vh;
+}
+
+.create-presentation-container > .edit-main-container {
+    display: flex;
+}
