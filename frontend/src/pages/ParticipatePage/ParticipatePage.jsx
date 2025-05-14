@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import './ParticipatePage.css';
 
 
 // const options = [
@@ -21,7 +22,7 @@ import { useParams } from "react-router-dom";
 
 function ParticipatePage() {
 
-    const [ options, setOptions ] = useState([]);
+    const [ slide, setSlide ] = useState([]);
     const [ selected, setSelected ] = useState(null);
     const {participationId} = useParams();
 
@@ -29,7 +30,7 @@ function ParticipatePage() {
         async function fetchOptions() {
             const response = await fetch(`http://localhost:3000/options/${participationId}`);
             const result = await response.json();
-            setOptions(result);
+            setSlide(result);
         }
 
         if (participationId) fetchOptions();
@@ -43,6 +44,7 @@ function ParticipatePage() {
 
     async function handleSubmit(e) {
         e.preventDefault();
+        if(!selected) return;
 
         const response = await fetch("http://localhost:3000/option/increment", {
             method: "PATCH",
@@ -55,11 +57,11 @@ function ParticipatePage() {
     }
 
     return (
-        <div>
-            <h1>roh</h1>
+        <div className="participate-page-container">
+            <h2>{slide.question}</h2>
             <form onSubmit={handleSubmit}>
-                { optionGenerator(options, selected, handleCheckboxChange) }
-                <button type="submit">Submit</button>
+                { optionGenerator(slide?.options, selected, handleCheckboxChange) }
+                <button type="submit" className="submit-btn">Submit</button>
             </form>
         </div>
     )
@@ -68,7 +70,7 @@ function ParticipatePage() {
 export default ParticipatePage;
 
 function optionGenerator(options, selected, handleCheckboxChange) {
-    const generatedOptions = options.map((option) => {
+    const generatedOptions = options?.map((option) => {
         return (
             <div key={option._id} >
                 <input type="checkbox" name="option" value={option._id} id={option._id}

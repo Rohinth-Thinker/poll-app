@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-import { NavLink, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { PlayIcon, ThreeDotOptionIcon } from '../../../../../icons/Icon';
 
 function Slide({ id, slideNumber, handleSlideSwitch }) {

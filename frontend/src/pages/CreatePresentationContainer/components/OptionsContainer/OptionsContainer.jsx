@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AddImageButtonIcon, BarsVisualizationIcon, CommentsOptionIcon, DonutVisualizationIcon, DotsVisualizationIcon, EditOptionIcon, InteractivityOptionIcon, PieVisualizationIcon, QuestionMarkIcon, TemplatesOptionIcon, ThemesOptionIcon, WrongIcon } from "../../../../icons/Icon";
 
 import './OptionsContainer.css';
@@ -152,6 +152,11 @@ function OptionPropertiesContainer({selectedContainer, selectedSlide}) {
     }
 }
 
+function optionGenerator(options) {
+    const generatedOptions = options.map((option) => <AnswerOption key={option._id} option={option} />);
+    return generatedOptions;
+}
+
 function AnswerOption({ option }) {
 
     const [ input, setInput ] = useState(option.optionName);
@@ -167,11 +172,6 @@ function AnswerOption({ option }) {
             <button><WrongIcon /></button>
         </div>
     )
-}
-
-function optionGenerator(options) {
-    const generatedOptions = options.map((option) => <AnswerOption key={option._id} option={option} />);
-    return generatedOptions;
 }
 
 export default OptionsContainer;

@@ -1,7 +1,5 @@
 
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import './CreateMainContainer.css';
 
 function CreateMainContainer({ selectedContainer, changeSelectedContainer, selectedSlide }) {
@@ -51,7 +49,6 @@ function CreateMainContainer({ selectedContainer, changeSelectedContainer, selec
 }
 
 function optionBarContainers(options, totalVote) {
-    // console.log(options);
     const optionBars = options.map((option) => <ShowOptionBar totalVote={totalVote} option={option} key={option._id} /> );
     return optionBars;
 }

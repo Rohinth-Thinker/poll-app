@@ -51,7 +51,6 @@
 }
 
 .create-main-container > .main-container > .show-output-container > .options-container > .option {
-    /* background-color: tomato; */
     height: 100%;
     flex: 1;
     max-width: 150px;

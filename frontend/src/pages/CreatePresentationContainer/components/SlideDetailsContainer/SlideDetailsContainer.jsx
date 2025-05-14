@@ -1,12 +1,10 @@
 
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addSlide } from '../../../../features/slidesArray';
 import Slide from './components/Slide';
 import './SlideDetailsContainer.css';
-let counter = 0;
 
-function SlideDetailsContainer({ handleSlideSwitch }) {
+function SlideDetailsContainer({ handleSlideSwitch, loading }) {
     
     const slidesArray = useSelector((state) => state.slidesArray);
     const dispatch = useDispatch();
@@ -23,6 +21,8 @@ function SlideDetailsContainer({ handleSlideSwitch }) {
             </div>
 
             <div className="list-slide-container" >
+                {loading && <span>LOADING...</span>}
+                {!loading && slidesArray.length <= 0 && <span>No slides created yet</span>}
                 { slidesGenerator(slidesArray, handleSlideSwitch) }
             </div>
         </div>

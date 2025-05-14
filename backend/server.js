@@ -1,39 +1,31 @@
 
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require('cookie-parser');
 const { connecToDb } = require("./database/database");
 const slidesArray = require("./models/slidesArrayModel");
 
 const { app, server, io } = require("./socket/socket");
-const userList = require("./models/userListModel");
+const router = require("./routes");
 
 const PORT = 3000;
 
-app.use(cors());
+app.use(cors({credentials: true, origin: true}));
 app.use(express.json());
+app.use(cookieParser());
+app.use('/api', router);
 
 app.get("/", async (req, res) => {
     res.send("Hello");
 })
 
-app.get('/slides/all', async (req, res) => {
-    const slides = await slidesArray.find();
-    res.status(200).json(slides);
-})
-
-app.get('/slides/:userId', async (req, res) => {
-    const {userId} = req.params;
-    const response = await userList.findById(userId).select("slideList").populate("slideList");
-    // console.log(response.slideList);
-    res.status(200).json(response.slideList);
-})
-
-
 app.get('/options/:participationId', async (req, res) => {
     const { participationId } = req.params;
-    const response = await slidesArray.findOne({ participationId }).select("multipleChoice.options");
+    const response = await slidesArray.findOne({ participationId }).select("multipleChoice.options question");
+    console.log(response);
     const options = response.multipleChoice.options;
-    res.status(200).json(options);
+    const question = response.question.label;
+    res.status(200).json({options, question});
 })
 
 

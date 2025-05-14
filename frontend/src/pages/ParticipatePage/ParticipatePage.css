@@ -1,0 +1,7 @@
+
+.participate-page-container > form > .submit-btn {
+    background-color: black;
+    color: white;
+    padding: 1em;
+    border-radius: 2em;
+}
