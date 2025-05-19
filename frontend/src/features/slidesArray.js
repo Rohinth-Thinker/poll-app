@@ -25,54 +25,20 @@ function handleIncrementVote(state, action) {
     return slides;
 }
 
-let counter = 0;
+// function handleUpdateOption(state, action) {
+//     console.log(action.payload);
+// }
+
 const slidesArraySlice = createSlice({
     name: 'slidesArray',
     initialState: [],
     reducers: {
         initializeState: (state, action) => state = action.payload.slides,
         incrementVote: (state, action) => handleIncrementVote(state, action),
-        addSlide: (state) => {
-            state.push({
-                id: new Date().toDateString() + counter++,
-                slide: {
-                    questionType: "Multiple choice",
-                },
-        
-                question: {
-                    label: "",
-                },
-        
-                multipleChoice: {
-                    visualizationType: {
-                        type: "Bars",
-                        showPercenrage: false,
-                    },
-        
-                    options: [
-                        {
-                            optionId: 1,
-                            optionName: "option1",
-                            optionPhoto: null,
-                            optionVote: 0,
-                        },
-        
-                        {
-                            optionId: 2,
-                            optionName: "option2",
-                            optionPhoto: null,
-                            optionVote: 0,
-                        }
-                    ],
-        
-                    chooseCorectAnswers: false,
-                    selectMultipleAnswers: false,
-                    totalVote: 0,
-                }
-            })
-        }
+        addSlidesArray: (state, action) => { state.push(action.payload.slide) },
+        // updateOption: (state, action) => handleUpdateOption(state, action),
     }
 })
 
-export const { addSlide, initializeState, incrementVote } = slidesArraySlice.actions;  
+export const { addSlidesArray, initializeState, incrementVote } = slidesArraySlice.actions;  
 export default slidesArraySlice.reducer;

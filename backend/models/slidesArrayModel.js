@@ -3,27 +3,44 @@ const mongoose = require("mongoose");
 
 const slidesArraySchema = mongoose.Schema({
     slide: {
-        questionType: String,
+        questionType: {
+            type: String,
+            required: true,
+        }
     },
 
     question: {
-        label: String,
+        label: {
+            type: String,
+            default: '',
+        }
     },
 
     participationId: {
         type: String,
         unique: true,
+        required: true,
     },
 
     multipleChoice: {
         visualizationType: {
-            vType: String,
-            showPercentage: Boolean,
+            vType: {
+                type: String,
+                default: '',
+            },
+            
+            showPercentage: {
+                type: String,
+                default: false,
+            },
         },
 
         options: [
             {
-                optionName: String,
+                optionName: {
+                    type: String,
+                    default: '',
+                },
                 optionPhoto: {
                     type: String,
                     default: null,

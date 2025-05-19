@@ -1,3 +1,4 @@
+const slidesArray = require("../models/slidesArrayModel");
 const userList = require("../models/userListModel");
 
 async function checkExistEmail(email) {
@@ -36,7 +37,25 @@ async function fetchSlidesByUserId(userId) {
     }
 }
 
+async function addSlideInDB(slide) {
+    try {
+        const response = await slidesArray.create(slide);
+        return response;
+    } catch(err) {
+        throw err;
+    }
+}
+
+async function updateUserSlideList(userId, slideId) {
+    try {
+        const response = await userList.updateOne({_id: userId}, {$push: {slideList: slideId}});
+        return response;
+    } catch(err) {
+        throw err;
+    }
+}
+
 module.exports = {
     checkExistEmail, addUser, findUserById,
-    fetchSlidesByUserId,
+    fetchSlidesByUserId, addSlideInDB, updateUserSlideList,
 }

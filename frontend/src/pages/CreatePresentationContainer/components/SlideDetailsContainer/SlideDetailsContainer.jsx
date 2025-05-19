@@ -1,6 +1,7 @@
 
 import { useDispatch, useSelector } from 'react-redux';
-import { addSlide } from '../../../../features/slidesArray';
+// import { addSlide } from '../../../../features/slidesArray';
+import useAddSlide from '../../../../hooks/useAddSlide';
 import Slide from './components/Slide';
 import './SlideDetailsContainer.css';
 
@@ -8,16 +9,18 @@ function SlideDetailsContainer({ handleSlideSwitch, loading }) {
     
     const slidesArray = useSelector((state) => state.slidesArray);
     const dispatch = useDispatch();
+    const [l, addSlide] = useAddSlide()
 
-    function handleNewSlide() {
-        dispatch(addSlide());
+    async function handleNewSlide(e) {
+        e.preventDefault();
+        await addSlide();
     }
 
 
     return (
         <div className='slide-details-container'>
             <div className="new-slide-container">
-                <button className="new-slide-button" onClick={handleNewSlide} >+ New slide</button>
+                <button className="new-slide-button" onClick={handleNewSlide} >{l ? 'Loading...' : '+ New slide'}</button>
             </div>
 
             <div className="list-slide-container" >
