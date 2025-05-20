@@ -7,7 +7,7 @@ function CreatePresentationHeader({participationId}) {
     const [isCopied, setIsCopied] = useState(false);
     async function handleShare() {
         console.log("COPYING...")
-        await navigator.clipboard.writeText(`http://localhost:5173/participate/${participationId}`);
+        await navigator.clipboard.writeText(`https://poll-app-jp9w.onrender.com/participate/${participationId}`);
         setIsCopied(true);
         setTimeout(() => setIsCopied(false), 2000);
 
