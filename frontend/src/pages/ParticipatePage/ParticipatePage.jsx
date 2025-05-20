@@ -1,30 +1,15 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { useSocketContext } from "../../context/SocketContext";
 import './ParticipatePage.css';
-
-
-// const options = [
-//     {
-//         _id: "1",
-//         optionName: "Java",
-//         optionPhoto: null,
-//         optionVote: 1,
-//     },
-
-//     {
-//         _id: "2",
-//         optionName: "Python",
-//         optionPhoto: null,
-//         optionVote: 1,
-//     }
-// ]
 
 function ParticipatePage() {
 
-    const [ slide, setSlide ] = useState([]);
+    const [ slide, setSlide ] = useState(null);
     const [ selected, setSelected ] = useState(null);
     const {participationId} = useParams();
+    const {socket} = useSocketContext();
 
     useEffect(() => {
         async function fetchOptions() {
@@ -35,6 +20,41 @@ function ParticipatePage() {
 
         if (participationId) fetchOptions();
     }, [participationId])
+
+    useEffect(() => {
+        if(socket) {
+            socket.emit("join_room", participationId);
+            socket.on('changed_optionName', handleOptionName);
+            socket.on('changed_questionLabel', handleQuestionLabel);
+            socket.on('added_newOption', handleAddNewOption);
+
+            return () => {
+                socket.off('changed_optionName', handleOptionName);
+                socket.off('changed_questionLabel', handleQuestionLabel);
+                socket.off('added_newOption', handleAddNewOption);
+                socket.emit('leave_room', participationId);
+            }
+        }
+    }, [socket, slide])
+
+    function handleAddNewOption(newOption) {
+        const options = [...slide.options, newOption];
+        setSlide({...slide, options});
+    }
+
+    function handleQuestionLabel(questionText) {
+        setSlide({...slide, question: questionText});
+    }
+
+    function handleOptionName(optionId, optionName) {   
+        const options = slide?.options.map((option) => {
+            if(option._id !== optionId) return option;
+
+            return {...option, optionName};
+        })
+
+        setSlide({...slide, options});
+    }
     
     function handleCheckboxChange(e) {
         if (selected !== e.target.value) {
@@ -56,9 +76,11 @@ function ParticipatePage() {
         console.log("SUBMITTED", await response.json());
     }
 
+    if(!slide) return;
+
     return (
         <div className="participate-page-container">
-            <h2>{slide.question}</h2>
+            <h2>{slide?.question}</h2>
             <form onSubmit={handleSubmit}>
                 { optionGenerator(slide?.options, selected, handleCheckboxChange) }
                 <button type="submit" className="submit-btn">Submit</button>

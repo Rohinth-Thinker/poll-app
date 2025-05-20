@@ -1,4 +1,5 @@
-const { fetchSlidesByUserId, addSlideInDB, updateUserSlideList, } = require("../database/dbFunctions");
+const { fetchSlidesByUserId, addSlideInDB, updateUserSlideList, addOptionInSlide, handleOptionNameInSlide, handleQuestionLabelInSlide, } = require("../database/dbFunctions");
+const { io } = require("../socket/socket");
 const generateParticipationId = require("../utils/generateParticipationId");
 
 async function fetchSlides(req, res) {
@@ -28,7 +29,7 @@ async function addSlide(req, res) {
         const slide = {...s, participationId};
 
         const newSlide = await addSlideInDB(slide);
-        const updateResponse = await updateUserSlideList(userId, newSlide.id);
+        await updateUserSlideList(userId, newSlide.id);
 
         res.status(200).json({newSlide});
     } catch(err) {
@@ -37,6 +38,59 @@ async function addSlide(req, res) {
     }
 }
 
+async function addOption(req, res) {
+    try{
+        const {selectedSlideId, optionName, participationId} = req.body;
+        if(!selectedSlideId) {
+            return res.status(400).json({error: 'Invalid selected slide ID'});
+        }
+
+        const newOption = await addOptionInSlide(selectedSlideId, optionName);
+        if(!newOption) {
+            return res.status(400).json({error: 'Invalid selected slide ID'});
+        }
+
+        io.to(participationId).emit('added_newOption', newOption);
+        res.status(200).json(newOption);
+    } catch(err) {
+        console.log('At addOption controller, ', err.name, err.msg);
+        res.status(400).json({error: 'An error occured, Try again later'});
+    }
+}
+
+async function handleOptionName(req, res) {
+    try {
+        const {selectedSlideId, optionId, optionName, participationId} = req.body;
+        if(!selectedSlideId || !optionId) {
+            return res.status(400).json({error: 'Invalid Ids'});
+        }
+
+        const response = await handleOptionNameInSlide(selectedSlideId, optionId, optionName);
+        io.to(participationId).emit('changed_optionName', optionId, optionName);
+        res.status(200).json(response);
+    } catch(err) {
+        console.log('At handleOptionName controller, ', err.name, err.msg);
+        res.status(400).json({error: 'An error occured, Try again later'});
+    }
+}
+
+async function handleQuestionLabel(req, res) {
+    try {
+        const {selectedSlideId, questionText, participationId} = req.body;
+        if(!selectedSlideId) {
+            return res.status(400).json({error: 'Invalid selected Id'});
+        }
+
+        const response = await handleQuestionLabelInSlide(selectedSlideId, questionText);
+        io.to(participationId).emit('changed_questionLabel', questionText);
+        res.status(200).json(response);
+    } catch(err) {
+        console.log('At handleQuestionLabel controller, ', err.name, err.msg);
+        res.status(400).json({error: 'An error occured, Try again later...'});
+    }
+}
+
+
 module.exports = {
-    fetchSlides, addSlide,
+    fetchSlides, addSlide, addOption, handleOptionName, handleQuestionLabel,
 }

@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const slidesArray = require("../models/slidesArrayModel");
 const userList = require("../models/userListModel");
 
@@ -55,7 +56,54 @@ async function updateUserSlideList(userId, slideId) {
     }
 }
 
+async function addOptionInSlide(slideId, optionName) {
+    try {
+        const newOption = {
+            _id: new mongoose.Types.ObjectId(),
+            optionName,
+            optionPhoto: null,
+            optionVote: 0,
+        }
+
+        const response = await slidesArray.updateOne(
+            {_id: slideId},
+            {$push: {"multipleChoice.options": newOption}},
+        )
+
+        if(!response.modifiedCount) return null;
+        return newOption;
+    } catch(err) {
+        throw err;
+    }
+}
+
+async function handleOptionNameInSlide(selectedSlideId, optionId, optionName) {
+    try {
+        const response = await slidesArray.updateOne(
+            {_id: selectedSlideId, 'multipleChoice.options._id': optionId},
+            {'multipleChoice.options.$.optionName': optionName}
+        )
+
+        return response;
+    } catch(err) {
+        throw err;
+    }
+}
+
+async function handleQuestionLabelInSlide(selectedSlideId, questionText) {
+    try {
+        const response = await slidesArray.updateOne(
+            {_id: selectedSlideId}, {question: {label: questionText}}
+        );
+
+        return response;
+    } catch(err) {
+        throw err;
+    }
+}
+
 module.exports = {
     checkExistEmail, addUser, findUserById,
-    fetchSlidesByUserId, addSlideInDB, updateUserSlideList,
+    fetchSlidesByUserId, addSlideInDB, updateUserSlideList, addOptionInSlide,
+    handleOptionNameInSlide, handleQuestionLabelInSlide,
 }

@@ -22,10 +22,10 @@ app.get("/", async (req, res) => {
 app.get('/options/:participationId', async (req, res) => {
     const { participationId } = req.params;
     const response = await slidesArray.findOne({ participationId }).select("multipleChoice.options question");
-    console.log(response);
+    // console.log(response);
     const options = response.multipleChoice.options;
     const question = response.question.label;
-    res.status(200).json({options, question});
+    res.status(200).json({options, question, selectedSlideId: response._id});
 })
 
 

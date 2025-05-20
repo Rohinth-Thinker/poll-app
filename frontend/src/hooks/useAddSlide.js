@@ -17,7 +17,7 @@ function useAddSlide() {
             }
 
             const response = await fetch('http://localhost:3000/api/slides/slide/add', {
-                method: 'POST',
+                method: 'PATCH',
                 body: JSON.stringify(slide),
                 headers: {
                     "Content-Type": "application/json",

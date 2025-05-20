@@ -10,7 +10,14 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-    // console.log("User connected", socket.id);
+    
+    socket.on('join_room', (roomId) => {
+        socket.join(roomId);
+    })
+
+    socket.on('leave_room', (roomId) => {
+        socket.leave(roomId);
+    })
 
 })
 

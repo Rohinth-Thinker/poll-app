@@ -70,3 +70,10 @@
     width: 100%;
     min-height: 2px;
 }
+
+.create-main-container > .main-container > .show-output-container > .options-container > .option > .option-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 10%;
+}

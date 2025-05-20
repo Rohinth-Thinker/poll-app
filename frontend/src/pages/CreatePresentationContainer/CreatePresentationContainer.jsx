@@ -21,7 +21,7 @@ function CreatePresentationContainer() {
     const [ searchParams, setSearchParams ] = useSearchParams();
     const slideId = searchParams.get("slide");
     const [loading] = useFetchSlides();
-    
+
     useEffect(() => {
         if(socket) {
             socket.on("vote_incremented", (...arg) => {
@@ -40,11 +40,14 @@ function CreatePresentationContainer() {
     console.log(slidesArray);
 
     const selectedSlide = slidesArray.find((slide) => slide._id === slideId );
+    if(slideId && !selectedSlide && !loading) {
+        return <h1>Wrong Slide ID</h1>
+    }
 
     return (
         <div className="create-presentation-container">
             <HeaderContainer />
-            <CreatePresentationHeader />
+            <CreatePresentationHeader participationId={selectedSlide?.participationId} />
 
             <div className="edit-main-container">
                 <SlideDetailsContainer handleSlideSwitch={handleSlideSwitch} loading={loading} />

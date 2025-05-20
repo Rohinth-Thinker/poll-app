@@ -1,8 +1,17 @@
 
+import { useState } from 'react';
 import { BackIcon, PreviewIcon, SettingsIcon } from '../../icons/Icon';
 import './CreatePresentationHeader.css';
 
-function CreatePresentationHeader() {
+function CreatePresentationHeader({participationId}) {
+    const [isCopied, setIsCopied] = useState(false);
+    async function handleShare() {
+        console.log("COPYING...")
+        await navigator.clipboard.writeText(`http://localhost:5173/participate/${participationId}`);
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2000);
+
+    }
     return (
         <div className='create-presentation-header'>
             <div className="left-section">
@@ -20,7 +29,9 @@ function CreatePresentationHeader() {
             </div>
             <div className="right-section">
                 <div className="preview-icon-container"> <PreviewIcon /> </div>
-                <button className="share-presentation-button">Share</button>
+                <button className="share-presentation-button" onClick={handleShare} disabled={isCopied || !participationId}>
+                    {isCopied ? 'copied': 'Share'}
+                </button>
                 <button className="present-presentation-button">Present</button>
             </div>
         </div>
