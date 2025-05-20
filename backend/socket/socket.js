@@ -5,9 +5,7 @@ const { createServer } = require("http");
 
 const app = express();
 const server = createServer(app);
-const io = new Server(server, {
-    cors: "http://localhost:5173",
-});
+const io = new Server(server);
 
 io.on("connection", (socket) => {
     

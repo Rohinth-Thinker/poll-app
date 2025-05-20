@@ -9,7 +9,7 @@ function useAddOption() {
     const addOption = async (selectedSlideId, optionNumber, participationId) => {
         try {
             setLoading(true);
-            const response = await fetch('http://localhost:3000/api/slides/slide/option/add', {
+            const response = await fetch('/api/slides/slide/option/add', {
                 method: 'PATCH',
                 body: JSON.stringify({selectedSlideId, optionName: `option ${optionNumber}`, participationId}),
                 headers: {

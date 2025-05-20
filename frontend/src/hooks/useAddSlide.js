@@ -16,7 +16,7 @@ function useAddSlide() {
                 }
             }
 
-            const response = await fetch('http://localhost:3000/api/slides/slide/add', {
+            const response = await fetch('/api/slides/slide/add', {
                 method: 'PATCH',
                 body: JSON.stringify(slide),
                 headers: {

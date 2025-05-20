@@ -13,10 +13,12 @@ function App() {
 
   return (
       <Routes>
+        <Route index element={ authUser ? <Navigate to={`/app/presentation/${authUser.userId}`} /> : <SignupPage />} />
         <Route path="/app/signup" element={ authUser ? <Navigate to={`/app/presentation/${authUser.userId}`} /> : <SignupPage />} />
+
         <Route path="/app/login" element={authUser ? <Navigate to={`/app/presentation/${authUser.userId}`} /> : <LoginPage />} />
-        <Route path="/app/presentation/:userId/" element={ authUser ? <Provider store={store} > <CreatePresentationContainer /> </Provider> : <Navigate to="/app/signup" /> } />
-        <Route path="/participate/:participationId?" element={ authUser ? <ParticipatePage /> : <Navigate to="/app/signup" /> } />
+        <Route path="/app/presentation/:userId/" element={ authUser ? <Provider store={store} > <CreatePresentationContainer /> </Provider> : <Navigate to="/app/login" /> } />
+        <Route path="/participate/:participationId?" element={ authUser ? <ParticipatePage /> : <Navigate to="/app/login" /> } />
       </Routes>
   )
 }

@@ -13,7 +13,7 @@ function useFetchSlides() {
         async function fetchSlides() {
             try {
                 setLoading(true);
-                const response = await fetch(`http://localhost:3000/api/slides/fetch`, {credentials: 'include'});
+                const response = await fetch(`/api/slides/fetch`, {credentials: 'include'});
                 const slides = await response.json();
                 dispatch(initializeState({slides}));
                 setLoading(false)

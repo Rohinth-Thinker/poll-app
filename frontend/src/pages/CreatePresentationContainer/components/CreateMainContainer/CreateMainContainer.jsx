@@ -18,7 +18,7 @@ function CreateMainContainer({ selectedContainer, changeSelectedContainer, selec
             dispatch(updateQuestion({selectedSlideId: selectedSlide._id, questionText: e.target.value}))
 
             debounceRef.current = setTimeout(async () => {
-                const response = await fetch('http://localhost:3000/api/slides/slide/question/handle/label', {
+                const response = await fetch('/api/slides/slide/question/handle/label', {
                     method: 'PATCH',
                     body: JSON.stringify({selectedSlideId: selectedSlide._id, questionText: e.target.value, participationId: selectedSlide.participationId}),
                     headers: {

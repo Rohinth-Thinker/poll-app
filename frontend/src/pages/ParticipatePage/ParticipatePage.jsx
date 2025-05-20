@@ -13,7 +13,7 @@ function ParticipatePage() {
 
     useEffect(() => {
         async function fetchOptions() {
-            const response = await fetch(`http://localhost:3000/options/${participationId}`);
+            const response = await fetch(`/api/slides/slide/options/${participationId}`);
             const result = await response.json();
             setSlide(result);
         }
@@ -66,7 +66,7 @@ function ParticipatePage() {
         e.preventDefault();
         if(!selected) return;
 
-        const response = await fetch("http://localhost:3000/option/increment", {
+        const response = await fetch("/api/slides/slide/option/increment", {
             method: "PATCH",
             body: JSON.stringify({participationId, optionId: selected}),
             headers: {

@@ -21,7 +21,7 @@ function useAuth(process) {
                 return {status: false};
             }
 
-            const response = await fetch(`http://localhost:3000/api/auth/${process}`, {
+            const response = await fetch(`/api/auth/${process}`, {
                 method: 'POST',
                 body: JSON.stringify(inputs),
                 headers: {

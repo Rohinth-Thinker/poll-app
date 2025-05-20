@@ -1,4 +1,5 @@
 const { fetchSlidesByUserId, addSlideInDB, updateUserSlideList, addOptionInSlide, handleOptionNameInSlide, handleQuestionLabelInSlide, } = require("../database/dbFunctions");
+const slidesArray = require("../models/slidesArrayModel");
 const { io } = require("../socket/socket");
 const generateParticipationId = require("../utils/generateParticipationId");
 
@@ -90,7 +91,33 @@ async function handleQuestionLabel(req, res) {
     }
 }
 
+async function getOptionsByParticipationId(req, res) {
+    const { participationId } = req.params;
+    const response = await slidesArray.findOne({ participationId }).select("multipleChoice.options question");
+    // console.log(response);
+    const options = response.multipleChoice.options;
+    const question = response.question.label;
+    res.status(200).json({options, question, selectedSlideId: response._id});
+}
+
+async function incrementVote(req, res) {
+    const { participationId, optionId } = req.body;
+
+    const response = await slidesArray.updateOne(
+        {participationId, "multipleChoice.options._id": optionId},
+        {
+            $inc : {
+                "multipleChoice.options.$.optionVote": 1,
+                "multipleChoice.totalVote": 1,
+            }
+        }
+    )
+
+    io.emit("vote_incremented", participationId, optionId);
+    res.status(200).json(response);
+}
 
 module.exports = {
     fetchSlides, addSlide, addOption, handleOptionName, handleQuestionLabel,
+    getOptionsByParticipationId, incrementVote,
 }

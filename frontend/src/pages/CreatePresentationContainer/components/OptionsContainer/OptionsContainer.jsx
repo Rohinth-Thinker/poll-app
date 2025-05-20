@@ -177,7 +177,7 @@ function AnswerOption({ option, selectedSlideId, participationId }) {
             dispatch(updateOption({selectedSlideId, optionId: option._id, optionName: e.target.value}));
 
             debounceRef.current = setTimeout(async () => {
-                const response = await fetch('http://localhost:3000/api/slides/slide/option/handle/optionName', {
+                const response = await fetch('/api/slides/slide/option/handle/optionName', {
                     method: 'PATCH',
                     body: JSON.stringify({selectedSlideId, optionId: option._id, optionName: e.target.value, participationId}),
                     headers: {
