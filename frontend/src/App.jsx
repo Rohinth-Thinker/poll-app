@@ -18,7 +18,7 @@ function App() {
 
         <Route path="/app/login" element={authUser ? <Navigate to={`/app/presentation/${authUser.userId}`} /> : <LoginPage />} />
         <Route path="/app/presentation/:userId/" element={ authUser ? <Provider store={store} > <CreatePresentationContainer /> </Provider> : <Navigate to="/app/login" /> } />
-        <Route path="/participate/:participationId?" element={ authUser ? <ParticipatePage /> : <Navigate to="/app/login" /> } />
+        <Route path="/participate/:participationId?" element={<ParticipatePage />} />
       </Routes>
   )
 }
